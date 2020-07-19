@@ -246,11 +246,15 @@ def convert_dict(obj, ids, parent, attr_type, item_func, cdata):
         elif isinstance(val, collections.Iterable):
             if attr_type:
                 attr['type'] = get_xml_type(val)
-            addline('<%s%s>%s</%s>' % (
-                key, 
-                make_attrstring(attr), 
-                convert_list(val, ids, key, attr_type, item_func, cdata), 
-                key
+            # addline('<%s%s>%s</%s>' % (
+            #     key,
+            #     make_attrstring(attr),
+            #     convert_list(val, ids, key, attr_type, item_func, cdata),
+            #     key
+            #     )
+            # )
+            addline('%s' % (
+                convert_list(val, ids, key, attr_type, item_func, cdata),
                 )
             )
 
@@ -292,17 +296,39 @@ def convert_list(items, ids, parent, attr_type, item_func, cdata):
             
         elif isinstance(item, dict):
             if not attr_type:
-                addline('<%s>%s</%s>' % (
-                    item_name, 
-                    convert_dict(item, ids, parent, attr_type, item_func, cdata),
-                    item_name, 
+                # addline('<%s>%s</%s>' % (
+                #     item_name,
+                #     convert_dict(item, ids, parent, attr_type, item_func, cdata),
+                #     item_name,
+                #     )
+                # )
+                if list(item.keys())[0] == '@attrs':
+                    custom_attrs = item['@attrs']
+                    item.pop('@attrs', None)
+                    addline('<%s%s>%s</%s>' % (
+                        parent, make_attrstring(custom_attrs),
+                        convert_dict(item, ids, parent, attr_type, item_func, cdata),
+                        parent
+                        )
                     )
-                )
+                else:
+                    addline('<%s%s>%s</%s>' % (
+                        parent, make_attrstring(attr),
+                        convert_dict(item, ids, parent, attr_type, item_func, cdata),
+                        parent
+                        )
+                    )
             else:
-                addline('<%s type="dict">%s</%s>' % (
-                    item_name, 
+                # addline('<%s type="dict">%s</%s>' % (
+                #     item_name,
+                #     convert_dict(item, ids, parent, attr_type, item_func, cdata),
+                #     item_name,
+                #     )
+                # )
+                addline('<%s%s type="dict">%s</%s>' % (
+                    parent, make_attrstring(attr),
                     convert_dict(item, ids, parent, attr_type, item_func, cdata),
-                    item_name, 
+                    parent,
                     )
                 )
 

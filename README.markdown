@@ -272,7 +272,44 @@ Running a standard `dicttoxml` you will get a result like this:
 </FamilyTree>
 ```
 
+List of dictionaries
+========================
 
+```python3
+my_dict = {
+    "Family": 
+    [
+        { "@attrs": { "Tree": "Menelaws" },
+          "Name": "Lewis Menelaws",
+          "Occupation": "Programmer",
+          "Programming Language": "Python"
+        }
+
+        { "@attrs": { "Tree": "Ganoush" },
+          "Name": "Baba Ganoush",
+          "Occupation": "Eater",
+          "Programming Language": "Turtle"
+        }
+    ]
+}
+```
+
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<FamilyTree>
+    <Family Tree="Menelaws">
+        <Name>Lewis Menelaws</Name>
+        <Occupation>Programmer</Occupation>
+        <Programming_Language>Python</Programming_Language>
+    </Family>
+    <Family Tree="Ganoush">
+        <Name>Baba Ganoush</Name>
+        <Occupation>Eater</Occupation>
+        <Programming_Language>Turtle</Programming_Language>
+    </Family>
+</FamilyTree>
+```
 
 
 Debugging
